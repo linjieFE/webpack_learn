@@ -1,0 +1,23 @@
+{
+  "name": "webpack_learn",
+  "version": "1.0.0",
+  "description": "webpack notebook学习笔记",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linjieFE/webpack_learn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/linjieFE/webpack_learn/issues"
+  },
+  "homepage": "https://github.com/linjieFE/webpack_learn#readme",
+  "devDependencies": {
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
