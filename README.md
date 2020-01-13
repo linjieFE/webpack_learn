@@ -142,6 +142,7 @@ devServer:{
     historyApiFallback:true,//友好处理404
     open:true,//启动时自动打工一个页面
     useLocalIp:false,//是否在打包的时候用自己的IP
+    https:false,//是否用https
     proxy:{ //处理跨域 (可利用正则等区配) 
         'api':'http://localhost:3000'   //另一个端口
     }
