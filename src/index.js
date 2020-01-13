@@ -1,1 +1,2 @@
-console.log('hi')
+console.log('hi，Jenny')
+alert('hi，Jenny')

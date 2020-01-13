@@ -71,7 +71,7 @@ webpack src/test.js --output test01/test.js
 webpack <需要打包目录/文件> --output <打包输出指定目录/文件> --mode none
 ```
 
-## 服务搭建
+## 服务链接
 ```
 yarn global add http-server
 ```
@@ -82,5 +82,81 @@ http-server dist
 
 http://127.0.0.1:8082/
 地址自动访问到dist/index.html
+----------------------------------------------
+## 服务搭建
+> step1 新建 build 文件夹=>webpack.config.js
+
+```javascript
+const webpack =require("webpack")//引入webpack
+const path =require("path")//引入path
+const DIST_PATH=path.resolve(__dirname,'../dist')//打包到的文件路径
+module.exports={
+    //入口
+    entry: path.resolve(__dirname,'../src/index.js'),//绝对路径
+    //编译输出打包
+    output:{
+        path:DIST_PATH,
+        filename:'index.js'
+    },
+    //模块解析
+    module:{
+
+    },
+    //插件
+    plugins:{
+
+    },
+    //开发服务器
+    devServer:{
+        
+    }
+}
+```
+
+> step2 
+终端
+```bash
+webpack --config/webpack.config.js --mode development 
+```
+也可以直接把 命令写入package.json里 通过 终端 npm run build 执行
+
+```
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"webpack --config build/webpack.config.js --mode production"
+}
+```
+
+## 搭建本地环境(启动热更新)
+```
+yarn add webpack-dev-server --dev
+```
+
+> 配置webpack.config.js
+```bash
+devServer:{
+    hot:true,//是否热更新
+    contentBase:DIST_PATH,//热更内存目录
+    port:8088,//服务端口
+    host:'0.0.0.0',//host地址
+    historyApiFallback:true,//友好处理404
+    open:true,//启动时自动打工一个页面
+    useLocalIp:false,//是否在打包的时候用自己的IP
+    proxy:{ //处理跨域 (可利用正则等区配) 
+        'api':'http://localhost:3000'   //另一个端口
+    }
+}
+```
+> 配置package.json
+
+```
+"scripts": {
+    "dev" : "webpack-dev-server --config build/webpack.config.js --mode development"
+}
+```
+
+> 终端npm run dev 访问 http://0.0.0.0:8088/index.js
+
+
 
 
