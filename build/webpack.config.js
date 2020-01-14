@@ -9,7 +9,7 @@ let files = glob.sync(path.join(ENTRY_PATH+'/**/*.js'))//用正则匹配所有�
 console.log('打包文件',files)
 
 files.forEach((file)=>{
-    let subkey = file.match(/src\/(\S*)\.js/)[1]//文件名
+    let subkey = file.match(/src\/(\S*)\.js/)[1]//文件名 \S* 匹配非空白字符串
     entryFiles[subkey]=file
 })
 
