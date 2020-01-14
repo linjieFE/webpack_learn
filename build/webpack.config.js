@@ -1,6 +1,7 @@
 const webpack =require("webpack")//引入webpack
 const path =require("path")//引入path
 const glob =  require('glob')//用来打包多个文件
+const htmlWebpackPlugin =  require('html-webpack-plugin')//引用html插件
 const DIST_PATH=path.resolve(__dirname,'../dist')//打包到的文件路径
 const ENTRY_PATH=path.resolve(__dirname,'../src')//需要打包的入口路径
 
@@ -25,7 +26,7 @@ module.exports={
     //编译输出打包
     output:{
         path:DIST_PATH,
-        filename:'[name].[chunkhash].js'
+        filename:'[name].[chunkhash:5].js'
     },
     //模块解析
     module:{
@@ -33,7 +34,13 @@ module.exports={
     },
     //插件
     plugins:[
-
+        new htmlWebpackPlugin({
+            filename:DIST_PATH+'/index.html',//文件目录/文件名.html
+            title:'测试',//html title 
+            template:path.resolve(__dirname,'../index.html'),//模板文件
+            inject:true,//默认true =>代表打包出来的script标签位于html底部
+            hash:true
+        })
     ],
     //开发服务器
     devServer:{

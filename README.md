@@ -189,7 +189,7 @@ output:{
 方法二 打包时只更新改动文件的hash值
 ```
 output:{
-    filename:'[name].[chunkhash].js'
+    filename:'[name].[chunkhash:8].js' //:8代表hash位数
 }
 ```
  ## 多文件打包（2） glob插件
@@ -198,6 +198,7 @@ output:{
  yarn add glob --dev
  ```
  > step2 -> webpack.config.js
+
  ```
 const glob =  require('glob')
 
@@ -214,6 +215,33 @@ files.forEach((file)=>{
 
 entry:entryFiles,
  ```
+ ## 优化webpack配置
+ > step1 安装 html-webpack-plugin
+```
+yarn add html-webpack-plugin --dev
+```
+> step2 -> webpack.config.js
+```javascript
+//插件引入
+const htmlWebpackPlugin =  require('html-webpack-plugin') //引用html插件
+
+plugins:[
+    new htmlWebpackPlugin({
+        filename:DIST_PATH+'/index.html',//文件目录/文件名.html
+        title:'测试',//html title 
+        template:path.resolve(__dirname,'../index.html'),//模板文件
+        inject:true,//body head true false,默认true =》代表打包出来的script标签位于html底部
+        hash:true,
+        //minfy:true//是否压缩
+    })
+],
+```
+> html中用模板语法动态引入插件title属性
+```html
+<title><%=htmlWebpackPlugin.option.title %></title>
+```
+
+ ## 编译webpack项目中的html文件
 
 
 
