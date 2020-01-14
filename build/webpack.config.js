@@ -6,15 +6,34 @@ const DIST_PATH=path.resolve(__dirname,'../dist')//打包到的文件路径
 const ENTRY_PATH=path.resolve(__dirname,'../src')//需要打包的入口路径
 
 var entryFiles={}
-let files = glob.sync(path.join(ENTRY_PATH+'/**/*.js'))//用正则匹配所有目录下的js文件
-console.log('打包文件',files)
 
+//[\s] --- 表示，只要了出现空白就匹配
+//[\S] --- 表示，只要了非空白就匹配
+let files = glob.sync(path.join(ENTRY_PATH+'/**/*.js'))//用正则匹配所有目录下的js文件
 files.forEach((file)=>{
     let subkey = file.match(/src\/(\S*)\.js/)[1]//文件名 \S* 匹配非空白字符串
     entryFiles[subkey]=file
 })
 
-console.log(entryFiles)
+var pluginsAll=[]//放所有的插件
+let pages = glob.sync(path.join(ENTRY_PATH+'/pages/**/*.html'))//用正则匹配所有目录下的js文件
+console.log('打印页面：',pages)
+
+pages.forEach((page,index)=>{
+    let name = page.match(/\/src\/pages\/(\S*)\.html/)[1]//文件名 \S* 匹配非空白字符串
+    
+    let plugPage= new htmlWebpackPlugin({
+        filename:path.join(DIST_PATH,name+'.html'),//文件目录/文件名.html
+        title:'测试'+index,//html title 
+        template:ENTRY_PATH+'/pages/'+name+'.html',//模板文件
+        inject:true,//默认true =>代表打包出来的script标签位于html底部
+        hash:true,
+        //minfy:true,//是否压缩
+        chunks:[name]//相应的文件名
+    })
+    pluginsAll.push(plugPage)
+})
+
 module.exports={
     //入口
     // entry: ENTRY_PATH+'/index.js',//绝对路径 
@@ -33,15 +52,16 @@ module.exports={
 
     },
     //插件
-    plugins:[
-        new htmlWebpackPlugin({
-            filename:DIST_PATH+'/index.html',//文件目录/文件名.html
-            title:'测试',//html title 
-            template:path.resolve(__dirname,'../index.html'),//模板文件
-            inject:true,//默认true =>代表打包出来的script标签位于html底部
-            hash:true
-        })
-    ],
+    // plugins:[
+    //     new htmlWebpackPlugin({
+    //         filename:DIST_PATH+'/index.html',//文件目录/文件名.html
+    //         title:'测试',//html title 
+    //         template:path.resolve(__dirname,'../index.html'),//模板文件
+    //         inject:true,//默认true =>代表打包出来的script标签位于html底部
+    //         hash:true
+    //     })
+    // ],
+    plugins:pluginsAll,
     //开发服务器
     devServer:{
         hot:true,//是否热更新
