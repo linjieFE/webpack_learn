@@ -1,13 +1,31 @@
 const webpack =require("webpack")//引入webpack
 const path =require("path")//引入path
+const glob =  require('glob')//用来打包多个文件
 const DIST_PATH=path.resolve(__dirname,'../dist')//打包到的文件路径
+const ENTRY_PATH=path.resolve(__dirname,'../src')//需要打包的入口路径
+
+var entryFiles={}
+let files = glob.sync(path.join(ENTRY_PATH+'/**/*.js'))//用正则匹配所有目录下的js文件
+console.log('打包文件',files)
+
+files.forEach((file)=>{
+    let subkey = file.match(/src\/(\S*)\.js/)[1]//文件名
+    entryFiles[subkey]=file
+})
+
+console.log(entryFiles)
 module.exports={
     //入口
-    entry: path.resolve(__dirname,'../src/index.js'),//绝对路径
+    // entry: ENTRY_PATH+'/index.js',//绝对路径 
+    // entry:{
+    //     index:ENTRY_PATH+'/index.js',
+    //     test:ENTRY_PATH+'/test.js'
+    // },
+    entry:entryFiles,
     //编译输出打包
     output:{
         path:DIST_PATH,
-        filename:'index.js'
+        filename:'[name].[chunkhash].js'
     },
     //模块解析
     module:{

@@ -1,4 +1,4 @@
-#Webpack主要优势
+## Webpack主要优势
 > webpack-dev-server 搭建本地环境，进行热更新
 > 预处理（less,sass,es6,typescript...）
 > 图片添加hash 方便线上CDN 缓存
@@ -157,6 +157,64 @@ devServer:{
 ```
 
 > 终端npm run dev 访问 http://0.0.0.0:8088/index.js
+
+## 多文件打包（1）
+> webpack.config.js
+
+```
+module.exports={
+    // 方式一：绝对路径 打包单个文件；
+    entry: ENTRY_PATH+'/index.js', 
+    // 方式二：多文件支持数组 ，多合并成一个
+    entry: [ ENTRY_PATH+'/index.js', ENTRY_PATH+'文件名.js'] 
+    // 方式三：对象格式{<文件名>:'<目录>'}
+    entry:{
+        index:ENTRY_PATH+'/index.js',
+        test:ENTRY_PATH+'/test.js'
+    },
+    // 编译输出的路径
+    output:{
+        path:DIST_PATH,
+        filename:'[name].js'// 对应entry的键名index, test
+    }
+}
+```
+## hash
+> 方法一 打包时会把所有文件更新hash值
+```
+output:{
+    filename:'[name].[hash].js'
+}
+```
+方法二 打包时只更新改动文件的hash值
+```
+output:{
+    filename:'[name].[chunkhash].js'
+}
+```
+ ## 多文件打包（2） glob插件
+ > step1
+ ```
+ yarn add glob --dev
+ ```
+ > step2 -> webpack.config.js
+ ```
+const glob =  require('glob')
+
+var entryFiles={}
+
+let files = glob.sync(ENTRY_PATH+'/**/*.js')//用正则匹配所有目录下的js文件
+
+console.log('打包文件',files)
+
+files.forEach((file)=>{
+    let subkey = file.match(/src\/(\S*)\.js/)[1]//文件名
+    entryFiles[subkey]=file
+})
+
+entry:entryFiles,
+ ```
+
 
 
 
