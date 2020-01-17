@@ -402,7 +402,64 @@ configuration.optimization.splitChunks has an unknown property 'minRemainingSize
 
   #### 再重新`npm run build` 打包成功 ^_^Y!
 
+  ## webpack优化之HappyPack
 
+  需要Webpack 能同一时间处理多个任务，发挥多核 CPU 电脑的威力，HappyPack 就能让 Webpack 做到这点，它把任务分解给多个子进程去并发的执行，子进程处理完后再把结果发送给主进程。
+  > 提示：由于HappyPack 对file-loader、url-loader 支持的不友好，所以不建议对该loader使用。
 
+  ## 安装 HappyPack
+```bash
+    cnpm install -D happypack
+```
+> 修改你的`webpack.base.config.js` 文件
+
+```javascript
+const HappyPack = require('happypack');
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+//...
+module: {
+    rules: [
+        //...
+        {
+            test: /\.js$/,
+            //把对.js 的文件处理交给id为happyBabel 的HappyPack 的实例执行
+            loader: 'happypack/loader?id=happyBabel',
+            //排除node_modules 目录下的文件
+            exclude: /node_modules/
+        },
+        //...
+    ]
+},
+
+plugins: [
+    new HappyPack({
+        //用id来标识 happypack处理那里类文件
+      id: 'happyBabel',
+      //如何处理  用法和loader 的配置一样
+      loaders: [{
+        loader: 'babel-loader?cacheDirectory=true',
+      }],
+      //共享进程池
+      threadPool: happyThreadPool,
+      //允许 HappyPack 输出日志
+      verbose: true,
+    })
+]
+```
+[webpack优化之HappyPack 实战](https://www.jianshu.com/p/b9bf995f3712)
+
+```bash
+Version: webpack 4.41.5
+Time: 42044ms
+Built at: 2020-01-17 17:44:03
+--------- 两次打包时间对比 ------
+Version: webpack 4.41.5
+Time: 24459ms
+Built at: 2020-01-17 20:01:03
+
+```
+
+安装`happypack`后打包的速度升高5%
 
 
