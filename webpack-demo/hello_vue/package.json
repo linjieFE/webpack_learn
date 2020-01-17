@@ -49,6 +49,7 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^5.0.2",
     "friendly-errors-webpack-plugin": "^1.6.1",
+    "happypack": "^5.0.1",
     "html-webpack-plugin": "^4.0.0-beta.11",
     "jest": "^22.0.4",
     "jest-serializer-vue": "^0.3.0",
