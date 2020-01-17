@@ -284,7 +284,7 @@ pages.forEach((page,index)=>{
   `eslint-loader` `vue-loader` `cnpm install file-loader@latest -D`...
 
 > webpack.base.conf.js
-  . ![参考官方文档](https://vue-loader.vuejs.org/migrating.html#a-plugin-is-now-required)
+  . [参考官方文档](https://vue-loader.vuejs.org/migrating.html#a-plugin-is-now-required)
   . Vue-loader在15.*之后的版本都是 vue-loader的使用都是需要伴生 `VueLoaderPlugin`的
   解决方案
   ```
@@ -332,7 +332,7 @@ pages.forEach((page,index)=>{
 three shaking 只支持ES Module模块的引入，删除没有引用的模块打包
 Code Splitting 拆分代码，提高执行效率和用户体验
 splitChunks是用来设置代码如何打包和分割的，现就webpack官网提供的默认参数详细解释一下每个参数配置的含义以及使用场景。
-![官网链接](https://webpack.js.org/plugins/split-chunks-plugin/)
+[官网链接](https://webpack.js.org/plugins/split-chunks-plugin/)
 
 > webpack.prod.conf.js `CommonsChunkPlugin` 替换成 `config.optimization.splitChunks ` 
 * webpack.prod.conf.js 中 注释掉引用 `CommonsChunkPlugin`
