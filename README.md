@@ -1,4 +1,4 @@
-## Webpack主要优势
+## Webpack4主要优势
 > webpack-dev-server 搭建本地环境，进行热更新
 > 预处理（less,sass,转换es6,转换JSX,typescript...）
 > 图片添加hash 方便线上CDN 缓存、压缩
@@ -27,7 +27,7 @@
 通过mode 可以轻松设置打包环境
 
 > `Tree-shaking`  打包前自动清除无用的文件引用。。。
-## 全局安装
+## 全局安装webpack4
 
 ```bash
 
